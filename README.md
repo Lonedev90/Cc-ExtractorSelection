@@ -4,7 +4,7 @@
   <strong>Cc-Extractor Selection</strong>
   <br>
   <p align="center">
-  https://cagribolat.github.io/Cc-ExtractorSelection.io/ <br>
+  https://Lonedev90.github.io/Cc-ExtractorSelection.io/ <br>
 
 
 
