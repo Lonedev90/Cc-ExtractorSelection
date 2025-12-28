@@ -8,44 +8,64 @@
 
 
 
-<br><b>Özellikler</b></p>
+Cc-Extractor, SRT altyazı dosyalarındaki belirli bölümleri akıllı algoritmalarla ayıklayan pratik bir düzenleme aracıdır.
 
-Bu araç, SRT dosyalarında sadece **BÜYÜK HARF** ile yazılmış bölümleri zaman damgalarıyla birlikte ayırır. <br>
-Default butonu ise sadece **BÜYÜK HARF** ile yazılmış bölümleri zaman damgalarıyla 
-birlikte ayırıp **var olan dosya adı+forced.srt** olarak kaydedilir. <br>
-Renk seçilir ise işlemi yapar, **var olan dosya adı+seçilen renk adı+forced.srt** olarak kaydedilir.
+**Özellikler**:
 
+**BÜYÜK HARF Tespiti**: Dosyadaki sadece **BÜYÜK HARF** ile yazılmış bölümleri (vurgular, sesli betimlemeler) zaman damgalarıyla birlikte ayırır.
 
- **Aşağıdaki adımları izleyerek aracı kullanabilirsiniz**:
+**SONG Butonu**: İçerisinde # karakteri bulunan satırları (şarkı sözleri) algılar ve bunları dosya adı_song.srt olarak kaydeder.
 
-- SRT dosyasını seçin.
-- Metinler için bir renk seçin.
-- "İşle ve Kaydet" düğmesine tıklayarak değişiklikleri uygulayın ve güncellenmiş SRT dosyasını indirin.
+**Renk Seçenekleri**: İşlem sırasında Yellow (Sarı) seçilir ise metinler renk koduyla işlenir ve dosya adı_yellow_forced.srt olarak kaydedilir.
+
+**Default Modu**: Sadece büyük harfleri ayırıp dosya adı_forced.srt adıyla standart formatta kaydeder.
+
+**Kusursuz Karakter Desteği**: Türkçe karakter (İ, Ş, Ğ vb.) hatalarını önleyen özel kodlama altyapısına sahiptir.
+
+**Güvenli Kullanım**: Sayfa yenilendiğinde (F5) tüm veriler sıfırlanır, gizliliğiniz korunur.
+
+**Nasıl Kullanılır?**
+
+SRT dosyasını seçin.
+
+Metinler için bir renk **(Yellow)** veya mod **(Song/Default)** seçin.
+
+"**İşle ve Kaydet**" düğmesine tıklayarak güncellenmiş dosyayı **indirin**.
 
 <b>**Katkıda Bulunma**</b></p>
 
 Eğer Cc-Extractor Selection geliştirmesine katkıda bulunmak isterseniz, lütfen GitHub deposunu ziyaret edin ve katkıda bulunmak istediğiniz özellikleri veya hataları bildirin.
 
 
-
 ________________________________________________________________________________________________________________________________________________________________________________________________________
 
-<b>English</b></p>
-<b>Features</b></p>
 
+**English Description**
 
+**Cc-Extractor** is a smart utility designed to filter and extract specific sections from SRT subtitle files with precision.
 
-This tool separates only **LARGE LETTERS** sections in SRT files with timestamps.
-The Default button separates only the sections written in **LARGE LETTERS** with timestamps and saves them as **existing filename+forced.srt**.
-If the color is selected, it does the operation and saves as **existing file name+selected color name+forced.srt**.
+**Key Features**:
 
-**To use the tool, follow these steps**:
+**UPPERCASE Extraction**: Automatically separates lines written in UPPERCASE (descriptions/shouts) along with their original timestamps.
 
-- Select an SRT file.
-- Choose a color for the text.
-- Click the "Process and Save" button to apply changes and download the updated SRT file.
+**SONG Button**: Specifically detects lines containing the # character (lyrics) and saves them as filename_song.srt.
+
+**Color Customization**: Applying the Yellow option processes text with color tags and saves it as filename_yellow_forced.srt.
+
+**Default Mode**: Extracts uppercase sections into a standard format named filename_forced.srt.
+
+**Encoding Fix**: Fully supports special characters (Turkish, etc.), preventing "broken character" issues.
+
+**Auto-Reset**: All inputs and selections are cleared on page refresh (F5) for a clean start every time.
+
+**How to Use**:
+
+Select your **SRT file**.
+
+Choose a color **(Yellow)** or a mode **(Song/Default)**.
+
+Click **"Process and Save"** to **download** your customized SRT file.
 
 <b>**Contributing**</b></p>
 
 If you would like to contribute to the development of Cc-Extractor Selection, please visit the GitHub repository and report any features or bugs you would like to contribute to.
-
