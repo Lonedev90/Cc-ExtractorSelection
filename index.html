@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cc Extractor</title>
+    <title>Cc Extractor - Pro</title>
     <style>
         body {
             height: 100vh;
@@ -21,76 +21,83 @@
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 100%;
+            width: 90%;
             max-width: 600px;
         }
 
         .header-text {
             font-size: 14px;
-            color: #000000;
+            color: #333;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         #saveButton {
-            background-color: green;
+            background-color: #28a745;
             color: white;
-            padding: 12px 24px;
+            padding: 12px 30px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        #saveButton:hover {
+            background-color: #218838;
         }
 
         #srtContent {
             width: 100%;
             height: 200px;
-            margin-top: 10px;
+            margin-top: 15px;
             box-sizing: border-box;
             resize: none;
+            font-family: monospace;
+            padding: 10px;
         }
 
         .color-buttons {
-            margin-bottom: 20px;
+            margin: 20px 0;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .color-buttons button {
-            padding: 10px 25px;
-            border: 2px solid transparent;
+            padding: 8px 20px;
+            border: 2px solid #ccc;
             cursor: pointer;
             font-weight: bold;
-            background-color: #ffffff;
-            color: #000000;
-            opacity: 0.5;
-            transition: all 0.3s ease;
+            background-color: #fff;
             border-radius: 5px;
+            transition: all 0.2s;
         }
 
         .color-buttons button.selected {
-            opacity: 1;
-            border: 3px solid #ff0000 !important;
+            border: 3px solid #ff0000;
+            transform: scale(1.05);
         }
 
         .file-input-container {
-            margin-bottom: 20px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px dashed #aaa;
         }
     </style>
 </head>
 <body>
     <div id="container">
-        <div class="header-text">Separates lines containing uppercase letters or # with timestamps.
-         <div class="header-text">The Human mind is Gemini-made.</div>
+        <div class="header-text">Separates lines containing uppercase letters or # with timestamps.</div>
+        <div class="header-text">The Human mind is Gemini-made.</div>
         <h1>Cc-Extractor Selection</h1>
 
         <div class="file-input-container">
-            <label for="srtFile">Chose: </label>
-            <input type="file" id="Select the file" accept=".srt" autocomplete="off">
+            <label for="srtFile">Choice file: </label>
+            <input type="file" id="srtFile" accept=".srt">
         </div>
 
         <div class="color-buttons">
@@ -99,21 +106,20 @@
             <button id="songBtn" onclick="setMode('song', '#00ffff', this)" style="background-color: #00ffff;">Song</button>
         </div>
 
-        <button id="saveButton" onclick="processSrt()">Process and Save</button><br><br>
-
-        <textarea id="srtContent" rows="10" cols="50" readonly placeholder="Sonuç burada görünecek..." autocomplete="off"></textarea>
+        <button id="saveButton" onclick="processSrt()">Process and Save</button>
+        <textarea id="srtContent" readonly placeholder="The result will be displayed here..."></textarea>
     </div>
 
     <script>
-        // Sayfa yenilendiğinde her şeyi sıfırla
+        let selectedColor = '#cccccc';
+        let currentMode = 'default';
+
+        // Başlangıç ayarları
         window.onload = function() {
             document.getElementById('srtFile').value = "";
             document.getElementById('srtContent').value = "";
             setMode('default', '#cccccc', document.getElementById('defaultBtn'));
         };
-
-        let selectedColor = '#cccccc';
-        let currentMode = 'default';
 
         function setMode(mode, color, button) {
             currentMode = mode;
@@ -132,14 +138,13 @@
             const file = fileInput.files[0];
             const reader = new FileReader();
 
-            reader.readAsArrayBuffer(file);
-
             reader.onload = function(e) {
                 const buffer = e.target.result;
+                // UTF-8 olarak dene
                 let decoder = new TextDecoder('utf-8');
                 let content = decoder.decode(buffer);
 
-                // Türkçe karakter koruması için hata kontrolü
+                // Eğer metinde bozulma varsa (yaygın Türkçe karakter testi) Windows-1254 dene
                 if (content.includes('')) {
                     decoder = new TextDecoder('windows-1254');
                     content = decoder.decode(buffer);
@@ -148,10 +153,13 @@
                 const processed = filterLogic(content, file.name);
                 document.getElementById('srtContent').value = processed;
             };
+
+            reader.readAsArrayBuffer(file);
         }
 
         function filterLogic(content, fileName) {
-            const lines = content.split(/\r?\n/);
+            // Satır sonlarını hem Windows (\r\n) hem Unix (\n) için standardize et
+            const lines = content.replace(/\r\n/g, '\n').split('\n');
             let results = [];
             let lastTime = "";
             let counter = 1;
@@ -168,8 +176,10 @@
                     if (currentMode === 'song') {
                         if (line.includes('#')) isMatch = true;
                     } else {
-                        // Büyük harf kontrolü (Tek harf dahil: "- A ." gibi)
-                        if (line === line.toLocaleUpperCase('tr-TR') && line !== line.toLocaleLowerCase('tr-TR')) {
+                        // Türkçe karakter duyarlı büyük harf kontrolü
+                        const upper = line.toLocaleUpperCase('tr-TR');
+                        const lower = line.toLocaleLowerCase('tr-TR');
+                        if (line === upper && upper !== lower) {
                             isMatch = true;
                         }
                     }
@@ -187,7 +197,8 @@
 
             const finalOutput = results.join('\n\n');
             if (finalOutput) {
-                download(finalOutput, fileName);
+                // GitHub Pages ve tarayıcı güvenliği için indirme fonksiyonu çağrısı
+                setTimeout(() => download(finalOutput, fileName), 100);
             } else {
                 alert("Kriterlere uygun metin bulunamadı!");
             }
@@ -195,13 +206,14 @@
         }
 
         function download(data, name) {
+            // UTF-8 BOM ekleyerek Türkçe karakterlerin Notepad'de doğru açılmasını sağla
             const BOM = new Uint8Array([0xEF, 0xBB, 0xBF]);
             const blob = new Blob([BOM, data], { type: "text/plain;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(blob);
             
             let nameExt = "_forced";
             if (currentMode === 'song') {
-                nameExt = "_song"; // forced ibaresini sildik
+                nameExt = "_song";
             } else if (selectedColor === '#ffff00') {
                 nameExt = "_yellow_forced";
             }
@@ -209,13 +221,17 @@
             const link = document.createElement('a');
             link.href = url;
             link.download = name.replace('.srt', '') + nameExt + ".srt";
+            
+            // Gizli linki dokümana ekle ve tetikle
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            
+            // Temizlik
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }, 100);
         }
     </script>
 </body>
 </html>
-
-
