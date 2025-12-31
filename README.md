@@ -5,7 +5,11 @@
   <br>
   <p align="center">
   https://lonedev90.github.io/Cc-ExtractorSelection/ <br>
-
+<br>
+    <p align="center">How to use
+    <br>
+    
+![EkranKayd2025-12-31181033-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/53653f39-4ab5-40e0-8c33-4935c72416f9)
 
 
 Cc-Extractor, SRT altyazı dosyalarındaki belirli bölümleri akıllı algoritmalarla ayıklayan pratik bir düzenleme aracıdır.
